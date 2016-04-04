@@ -1,9 +1,9 @@
 module.exports = function(babel) {
-  var t = babel.types;
+  const t = babel.types;
 
   return {
     visitor: {
-      ObjectExpression: function(path) {
+      ObjectExpression(path) {
         if(path.node.isClean) return;
         path.node.isClean = true;
 
@@ -14,7 +14,7 @@ module.exports = function(babel) {
           )
         );
       },
-      ArrayExpression: function(path) {
+      ArrayExpression(path) {
         if(path.node.isClean) return;
         path.node.isClean = true;
 
@@ -25,12 +25,12 @@ module.exports = function(babel) {
           )
         );
       },
-      AssignmentExpression: function(path) {
-        // if the lhs is a member expression convert this into assocIn
-        var lhs = path.node.left;
-        var rhs = path.node.right;
+      AssignmentExpression(path) {
+        const lhs = path.node.left;
+        const rhs = path.node.right;
+
         if(t.isMemberExpression(lhs)) {
-          var propertyName = lhs.property.name || lhs.property.value;
+          const propertyName = lhs.property.name || lhs.property.value;
           path.replaceWith(
             t.callExpression(
               t.memberExpression(t.identifier('mori'), t.identifier('assoc')),
@@ -39,8 +39,8 @@ module.exports = function(babel) {
           );
         }
       },
-      CallExpression: function(path) {
-        var callee = path.node.callee;
+      CallExpression(path) {
+        const callee = path.node.callee;
         if(t.isMemberExpression(callee)) {
           if(callee.object.name == 'console' && callee.property.name == 'log') {
             path.node.arguments = path.node.arguments.map(function(expr) {
@@ -55,3 +55,4 @@ module.exports = function(babel) {
     }
   };
 };
+
