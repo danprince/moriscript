@@ -1,16 +1,26 @@
 module.exports = function(babel) {
   const t = babel.types;
 
+  function moriMethod(name) {
+    const expr = t.memberExpression(t.identifier('mori'), t.identifier(name));
+    expr.isClean = true;
+    return expr;
+  }
+
   return {
     visitor: {
       ObjectExpression(path) {
         if(path.node.isClean) return;
         path.node.isClean = true;
 
+        const props = path.node.properties.reduce(function(props, prop) {
+          return props.concat([t.stringLiteral(prop.key.name), prop.value]);
+        }, []);
+
         path.replaceWith(
           t.callExpression(
-            t.memberExpression(t.identifier('mori'), t.identifier('toClj')),
-            [path.node]
+            moriMethod('hashMap'),
+            props
           )
         );
       },
@@ -20,7 +30,7 @@ module.exports = function(babel) {
 
         path.replaceWith(
           t.callExpression(
-            t.memberExpression(t.identifier('mori'), t.identifier('toClj')),
+            moriMethod('toClj'),
             [path.node]
           )
         );
@@ -30,14 +40,36 @@ module.exports = function(babel) {
         const rhs = path.node.right;
 
         if(t.isMemberExpression(lhs)) {
-          const propertyName = lhs.property.name || lhs.property.value;
+          var prop = lhs.property;
+          if(t.isIdentifier(lhs.property)) {
+            prop = t.stringLiteral(lhs.property.name);
+          }
+
           path.replaceWith(
             t.callExpression(
-              t.memberExpression(t.identifier('mori'), t.identifier('assoc')),
-              [lhs.object, t.stringLiteral(propertyName), rhs]
+              moriMethod('assoc'),
+              [lhs.object, prop, rhs]
             )
           );
         }
+      },
+      MemberExpression(path) {
+        // if the parent is an assignment expression, handle it elsewhere
+        if(t.isAssignmentExpression(path.parent)) return;
+        if(path.node.isClean) return;
+
+        var prop = path.node.property;
+
+        if(t.isIdentifier(path.node.property)) {
+          prop = t.stringLiteral(prop.name);
+        }
+
+        path.replaceWith(
+          t.callExpression(
+            moriMethod('get'),
+            [path.node.object, path.node.property]
+          )
+        );
       },
       CallExpression(path) {
         const callee = path.node.callee;
@@ -45,7 +77,7 @@ module.exports = function(babel) {
           if(callee.object.name == 'console' && callee.property.name == 'log') {
             path.node.arguments = path.node.arguments.map(function(expr) {
               return t.callExpression(
-                t.memberExpression(t.identifier('mori'), t.identifier('toJs')),
+                moriMethod('toJs'),
                 [expr]
               );
             });
