@@ -32,29 +32,38 @@ var zog = zag[1];</textarea>
         <textarea id="output"></textarea>
       </div>
     </main>
-    <section>
-      <strong>What is MoriScript?</strong>
-      <p>
-        MoriScript is an experiment that gives JavaScript first class
-        support for immutable data structures. As you might have
-        guessed from the name, it does this by including
-        <a href="http://swannodette.github.io/mori/">Mori</a> as part
-        of the runtime.
-      </p>
-      <strong>How Does it Work?</strong>
-      <p>
-        It also uses Babel to transform regular JavaScript code into
-        calls to Mori functions, which return compiled versions of
-        Clojure's persistent data structures.
-      </p>
-      <strong>Should I Build My Startup On It?</strong>
-      <p>
-        Nope! It's just an experimental toy, designed to help
-        others learn to write Babel plugins. It has many known edge
-        cases and you're better off using Mori or ClojureScript in
-        the first place.
-      </p>
-    </section>
+    <footer>
+      <section>
+        <strong>What is MoriScript?</strong>
+        <p>
+          MoriScript is an experiment that gives JavaScript first class
+          support for immutable data structures. As you might have
+          guessed from the name, it does this by including
+          <a href="http://swannodette.github.io/mori/">Mori</a> as part
+          of the runtime.
+        </p>
+      </section>
+      <section>
+        <strong>How Does it Work?</strong>
+        <p>
+          It also uses Babel to transform regular JavaScript code into
+          calls to Mori functions, which return compiled versions of
+          Clojure's persistent data structures.
+        </p>
+      </section>
+      <section>
+        <strong>Should I Build My Startup On It?</strong>
+        <p>
+          Nope! It's just an experimental toy, designed to help
+          others learn to write Babel plugins. It has many known edge
+          cases and you're better off using Mori or ClojureScript in
+          the first place.
+        </p>
+      </section>
+    </footer>
+    <center>
+      <a href="https://github.com/danprince/moriscript">MoriScript on GitHub</a>
+    </center>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.2/codemirror.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.2/mode/javascript/javascript.js"></script>
     <script src="bundle.js"></script>

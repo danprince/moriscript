@@ -52,10 +52,27 @@ header {
   text-align: left;
 }
 
+footer {
+  overflow: hidden;
+}
+
 section {
-  float: none;
+  float: left;
+  width: 30%;
   color: #2e2e2c;
   padding: 1em;
+  text-align: center;
+}
+
+p {
+  text-align: left;
+}
+
+@media only screen and (max-width: 850px){
+  section {
+    float: none;
+    width: auto;
+  }
 }
 
 a {
