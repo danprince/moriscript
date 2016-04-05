@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.2/codemirror.css">
+    <link rel="stylesheet" href="style.css">
+    <title>MoriScript</title>
+  </head>
+  <body>
+    <header>
+      <h1>MoriScript</h1>
+    </header>
+    <main>
+      <div class="split">
+        <label class='right'>MoriScript</label>
+        <textarea id="input">
+var mori = require('mori');
+
+var foo = { bar: 1, baz: 2 };
+var qux = foo.bar = 2;
+var zuq = foo.bar;
+
+var zig = [1, 2, 3];
+var zag = zig[0] = 3;
+var zog = zag[1];</textarea>
+      </div>
+      <div class="split">
+        <label class='right'>JavaScript</label>
+        <textarea id="output"></textarea>
+      </div>
+    </main>
+    <section>
+      <strong>What is MoriScript?</strong>
+      <p>
+        MoriScript is an experiment that gives JavaScript first class
+        support for immutable data structures. As you might have
+        guessed from the name, it does this by including
+        <a href="http://swannodette.github.io/mori/">Mori</a> as part
+        of the runtime.
+      </p>
+      <strong>How Does it Work?</strong>
+      <p>
+        It also uses Babel to transform regular JavaScript code into
+        calls to Mori functions, which return compiled versions of
+        Clojure's persistent data structures.
+      </p>
+      <strong>Should I Build My Startup On It?</strong>
+      <p>
+        Nope! It's just an experimental toy, designed to help
+        others learn to write Babel plugins. It has many known edge
+        cases and you're better off using Mori or ClojureScript in
+        the first place.
+      </p>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.2/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.2/mode/javascript/javascript.js"></script>
+    <script src="bundle.js"></script>
+  </body>
+</html>

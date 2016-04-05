@@ -5,13 +5,14 @@
   "main": "moriscript.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init": "babel-plugin init"
+    "build": "browserify app.js -o bundle.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.7.4",
+    "browserify": "^13.0.0",
     "mori": "^0.3.2"
   }
 }

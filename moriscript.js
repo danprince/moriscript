@@ -30,8 +30,8 @@ module.exports = function(babel) {
 
         path.replaceWith(
           t.callExpression(
-            moriMethod('toClj'),
-            [path.node]
+            moriMethod('vector'),
+            path.node.elements
           )
         );
       },

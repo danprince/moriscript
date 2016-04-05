@@ -6,6 +6,6 @@ var zuq = foo.bar;
 
 var zig = [1, 2, 3];
 var zag = zig[0] = 3;
-var zog = zig[1];
+var zog = zag[1];
 
 console.log(foo, qux);
