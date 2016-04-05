@@ -1,8 +1,8 @@
 module.exports = function(babel) {
-  const t = babel.types;
+  var t = babel.types;
 
   function moriMethod(name) {
-    const expr = t.memberExpression(t.identifier('mori'), t.identifier(name));
+    var expr = t.memberExpression(t.identifier('mori'), t.identifier(name));
     expr.isClean = true;
     return expr;
   }
@@ -13,7 +13,7 @@ module.exports = function(babel) {
         if(path.node.isClean) return;
         path.node.isClean = true;
 
-        const props = path.node.properties.reduce(function(props, prop) {
+        var props = path.node.properties.reduce(function(props, prop) {
           return props.concat([t.stringLiteral(prop.key.name), prop.value]);
         }, []);
 
@@ -36,8 +36,8 @@ module.exports = function(babel) {
         );
       },
       AssignmentExpression(path) {
-        const lhs = path.node.left;
-        const rhs = path.node.right;
+        var lhs = path.node.left;
+        var rhs = path.node.right;
 
         if(t.isMemberExpression(lhs)) {
           var prop = lhs.property;
@@ -72,7 +72,7 @@ module.exports = function(babel) {
         );
       },
       CallExpression(path) {
-        const callee = path.node.callee;
+        var callee = path.node.callee;
         if(t.isMemberExpression(callee)) {
           if(callee.object.name == 'console' && callee.property.name == 'log') {
             path.node.arguments = path.node.arguments.map(function(expr) {

@@ -13,6 +13,7 @@
   "devDependencies": {
     "babel-core": "^6.7.4",
     "browserify": "^13.0.0",
-    "mori": "^0.3.2"
+    "mori": "^0.3.2",
+    "uglifyify": "^3.0.1"
   }
 }

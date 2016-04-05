@@ -1,5 +1,5 @@
-const babel = require('babel-core');
-const moriscript = require('./moriscript');
+var babel = require('babel-core');
+var moriscript = require('./moriscript');
 
 var input = document.getElementById('input');
 var output = document.getElementById('output');
@@ -16,11 +16,11 @@ var outputEditor = CodeMirror.fromTextArea(output, {
 
 function compile() {
   var src = inputEditor.getValue();
-  const out = babel.transform(src, {
+  var out = babel.transform(src, {
     plugins: [moriscript]
   });
   outputEditor.setValue(out.code);
 }
 
-input.addEventListener('keyup', compile);
+inputEditor.on('change', compile);
 compile();
