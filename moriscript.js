@@ -57,6 +57,7 @@ module.exports = function(babel) {
         // if the parent is an assignment expression, handle it elsewhere
         if(t.isAssignmentExpression(path.parent)) return;
         if(path.node.isClean) return;
+        if(path.node.object.name == 'console') return;
 
         var prop = path.node.property;
 
