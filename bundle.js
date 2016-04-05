@@ -6,10 +6,13 @@ var input = document.getElementById('input');
 var output = document.getElementById('output');
 
 var inputEditor = CodeMirror.fromTextArea(input, {
-  mode: 'javascript'
+  mode: 'javascript',
+  lineNumbers: true,
+  autofocus: true
 });
 var outputEditor = CodeMirror.fromTextArea(output, {
-  mode: 'javascript'
+  mode: 'javascript',
+  lineNumbers: true
 });
 
 function compile() {
