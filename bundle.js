@@ -28,10 +28,10 @@ compile();
 
 },{"./moriscript":2,"babel-core":6}],2:[function(require,module,exports){
 module.exports = function(babel) {
-  var t = babel.types;
+  const t = babel.types;
 
   function moriMethod(name) {
-    var expr = t.memberExpression(t.identifier('mori'), t.identifier(name));
+    const expr = t.memberExpression(t.identifier('mori'), t.identifier(name));
     expr.isClean = true;
     return expr;
   }
@@ -42,7 +42,7 @@ module.exports = function(babel) {
         if(path.node.isClean) return;
         path.node.isClean = true;
 
-        var props = path.node.properties.reduce(function(props, prop) {
+        const props = path.node.properties.reduce(function(props, prop) {
           return props.concat([t.stringLiteral(prop.key.name), prop.value]);
         }, []);
 
@@ -59,14 +59,14 @@ module.exports = function(babel) {
 
         path.replaceWith(
           t.callExpression(
-            moriMethod('vector'),
-            path.node.elements
+            moriMethod('toClj'),
+            [path.node]
           )
         );
       },
       AssignmentExpression(path) {
-        var lhs = path.node.left;
-        var rhs = path.node.right;
+        const lhs = path.node.left;
+        const rhs = path.node.right;
 
         if(t.isMemberExpression(lhs)) {
           var prop = lhs.property;
@@ -86,6 +86,7 @@ module.exports = function(babel) {
         // if the parent is an assignment expression, handle it elsewhere
         if(t.isAssignmentExpression(path.parent)) return;
         if(path.node.isClean) return;
+        if(path.node.object.name == 'console') return;
 
         var prop = path.node.property;
 
@@ -101,7 +102,7 @@ module.exports = function(babel) {
         );
       },
       CallExpression(path) {
-        var callee = path.node.callee;
+        const callee = path.node.callee;
         if(t.isMemberExpression(callee)) {
           if(callee.object.name == 'console' && callee.property.name == 'log') {
             path.node.arguments = path.node.arguments.map(function(expr) {
