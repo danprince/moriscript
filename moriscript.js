@@ -22,9 +22,6 @@ module.exports = function(babel) {
         );
       },
       ArrayExpression(path) {
-        if(path.node.isClean) return;
-        path.node.isClean = true;
-
         path.replaceWith(
           t.callExpression(
             moriMethod('vector'),
@@ -56,10 +53,8 @@ module.exports = function(babel) {
         if(path.node.isClean) return;
         if(path.node.object.name == 'console') return;
 
-        var prop = path.node.property;
-
         if(t.isIdentifier(path.node.property)) {
-          prop = t.stringLiteral(prop.name);
+          path.node.property = t.stringLiteral(path.node.property.name);
         }
 
         path.replaceWith(
