@@ -2,7 +2,7 @@
   "name": "moriscript",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "moriscript.js",
   "scripts": {
   },
   "keywords": [],
