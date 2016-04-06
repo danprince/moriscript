@@ -1,22 +1,23 @@
-var babel = require('babel-core');
-var moriscript = require('./moriscript');
+import { transform } from 'babel-core';
+import moriscript from 'moriscript';
 
-var input = document.getElementById('input');
-var output = document.getElementById('output');
+const input = document.getElementById('input');
+const output = document.getElementById('output');
 
-var inputEditor = CodeMirror.fromTextArea(input, {
+const inputEditor = CodeMirror.fromTextArea(input, {
   mode: 'javascript',
   lineNumbers: true,
   autofocus: true
 });
-var outputEditor = CodeMirror.fromTextArea(output, {
+
+const outputEditor = CodeMirror.fromTextArea(output, {
   mode: 'javascript',
   lineNumbers: true
 });
 
 function compile() {
-  var src = inputEditor.getValue();
-  var out = babel.transform(src, {
+  const src = inputEditor.getValue();
+  const out = transform(src, {
     plugins: [moriscript]
   });
   outputEditor.setValue(out.code);
