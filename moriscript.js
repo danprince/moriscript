@@ -10,9 +10,14 @@ module.exports = function(babel) {
   return {
     visitor: {
       ObjectExpression(path) {
-        const props = path.node.properties.reduce(function(props, prop) {
-          return props.concat([t.stringLiteral(prop.key.name), prop.value]);
-        }, []);
+        const props = [];
+
+        path.node.properties.forEach(prop => {
+          props.push(
+            t.stringLiteral(prop.key.name),
+            prop.value
+          );
+        });
 
         path.replaceWith(
           t.callExpression(
@@ -34,24 +39,24 @@ module.exports = function(babel) {
         const rhs = path.node.right;
 
         if(t.isMemberExpression(lhs)) {
-          var prop = lhs.property;
           if(t.isIdentifier(lhs.property)) {
-            prop = t.stringLiteral(lhs.property.name);
+            lhs.property = t.stringLiteral(lhs.property.name);
           }
 
           path.replaceWith(
             t.callExpression(
               moriMethod('assoc'),
-              [lhs.object, prop, rhs]
+              [lhs.object, lhs.property, rhs]
             )
           );
         }
       },
       MemberExpression(path) {
-        // if the parent is an assignment expression, handle it elsewhere
-        if(t.isAssignmentExpression(path.parent)) return;
         if(path.node.isClean) return;
-        if(path.node.object.name == 'console') return;
+        if(t.isAssignmentExpression(path.parent)) return;
+        if(path.node.object.name == 'console' ||
+           path.node.object.name == 'window'  ||
+           path.node.object.name == 'global') return;
 
         if(t.isIdentifier(path.node.property)) {
           path.node.property = t.stringLiteral(path.node.property.name);
@@ -66,6 +71,7 @@ module.exports = function(babel) {
       },
       CallExpression(path) {
         const callee = path.node.callee;
+
         if(t.isMemberExpression(callee)) {
           if(callee.object.name == 'console' && callee.property.name == 'log') {
             path.node.arguments = path.node.arguments.map(function(expr) {
