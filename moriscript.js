@@ -10,9 +10,6 @@ module.exports = function(babel) {
   return {
     visitor: {
       ObjectExpression(path) {
-        if(path.node.isClean) return;
-        path.node.isClean = true;
-
         const props = path.node.properties.reduce(function(props, prop) {
           return props.concat([t.stringLiteral(prop.key.name), prop.value]);
         }, []);
@@ -30,8 +27,8 @@ module.exports = function(babel) {
 
         path.replaceWith(
           t.callExpression(
-            moriMethod('toClj'),
-            [path.node]
+            moriMethod('vector'),
+            path.node.elements
           )
         );
       },
